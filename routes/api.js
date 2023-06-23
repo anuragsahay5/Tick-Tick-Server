@@ -15,7 +15,6 @@ router.post("/login", async (req, res) => {
       return res.status(404).send("Invalid Username or Password!");
     }
     const token = jwt.sign(result._id.valueOf(), process.env.JWT_SECRET_KEY);
-    console.log({token})
     res.send({ token, username: result.username });
   } catch (error) {
     console.log(error);
