@@ -18,6 +18,7 @@ router.post("/login", async (req, res) => {
     res.send({ token, username: result.username });
     
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });
@@ -38,6 +39,7 @@ router.post("/register", async (req, res) => {
       res.send({ token, username: insert[0].username });
     }
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });
@@ -48,6 +50,7 @@ router.post("/getTodos", auth, async (req, res) => {
     let result = await todoModel.find({ author }, { __v: 0 }).sort({ _id: -1 });
     res.send(result);
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });
@@ -60,6 +63,7 @@ router.post("/addTodo", auth, async (req, res) => {
     });
     res.send(result);
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });
@@ -71,6 +75,7 @@ router.post("/deleteTodo", auth, async (req, res) => {
     });
     res.send(result);
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });
@@ -82,6 +87,7 @@ router.post("/clickTodo", auth, async (req, res) => {
     );
     res.send(result);
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 });
