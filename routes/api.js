@@ -14,9 +14,9 @@ router.post("/login", async (req, res) => {
     if (!result) {
       return res.status(404).send("Invalid Username or Password!");
     }
-    const token = jwt.sign(result._id.valueOf(), process.env.JWt_SECRET_KEY);
+    const token = jwt.sign(result._id.valueOf(), process.env.JWT_SECRET_KEY);
+    console.log({token})
     res.send({ token, username: result.username });
-    
   } catch (error) {
     console.log(error);
     res.send(error);
@@ -29,15 +29,11 @@ router.post("/register", async (req, res) => {
   try {
     let result = await userModel.findOne({ email });
     if (result) {
-      res.status(409).send("Email Already Registered");
-    } else {
-      let insert = await userModel.insertMany({ email, username, password });
-      const token = jwt.sign(
-        insert[0]._id.valueOf(),
-        process.env.JWt_SECRET_KEY
-      );
-      res.send({ token, username: insert[0].username });
+      return res.status(409).send("Email Already Registered");
     }
+    let insert = await userModel.insertMany({ email, username, password });
+    const token = jwt.sign(insert[0]._id.valueOf(), process.env.JWT_SECRET_KEY);
+    res.send({ token, username: insert[0].username });
   } catch (error) {
     console.log(error);
     res.send(error);
@@ -90,11 +86,6 @@ router.post("/clickTodo", auth, async (req, res) => {
     console.log(error);
     res.send(error);
   }
-});
-
-router.post("/", async (req, res) => {
-  console.log(req.header("data").SERVER_BASE_URL);
-  res.send("hi");
 });
 
 module.exports = router;
